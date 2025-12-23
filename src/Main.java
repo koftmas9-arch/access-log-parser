@@ -7,9 +7,9 @@ public class Main {
         System.out.println("Введите второе число:");
         int secondNumber = new Scanner(System.in).nextInt();
 
-        System.out.println(firstNumber + secondNumber);
-        System.out.println(firstNumber - secondNumber);
-        System.out.println(firstNumber * secondNumber);
-        System.out.println((double) firstNumber / secondNumber);
+        System.out.println("Сумма: " + (firstNumber + secondNumber));
+        System.out.println("Разность: " + (firstNumber - secondNumber));
+        System.out.println("Произведение: " + (firstNumber * secondNumber));
+        System.out.println("Частное: " + ((double) firstNumber / secondNumber));
     }
 }
