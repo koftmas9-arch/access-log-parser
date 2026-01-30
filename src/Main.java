@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         int count = 0;
         while (true) {
@@ -30,24 +31,32 @@ public class Main {
                 BufferedReader reader = new BufferedReader(fileReader);
                 String line;
                 int lineCount = 0;
-                int maxLine = Integer.MIN_VALUE;
-                int minLine = Integer.MAX_VALUE;
+                int yandexCount = 0;
+                int googleCount = 0;
                 while ((line = reader.readLine()) != null) {
                     lineCount++;
                     int length = line.length();
                     if (length > 1024) {
                         throw new TooLongLineException("Длина строки больше 1024");
                     }
-                    if (length > maxLine) {
-                        maxLine = length;
-                    }
-                    if (length < minLine) {
-                        minLine = length;
+                    if (line.contains("(") && line.contains(")") && line.indexOf('(') < line.indexOf(')')) {
+                        String firstBrackets = line.substring(line.indexOf('('), line.indexOf(')'));
+                        String[] parts = firstBrackets.split(";");
+                        if (parts.length >= 2) {
+                            String fragment = parts[1].trim();
+                            if (fragment.contains("/")) {
+                                String program = fragment.substring(0, fragment.indexOf('/'));
+                                switch (program) {
+                                    case "YandexBot" -> yandexCount++;
+                                    case "Googlebot" -> googleCount++;
+                                }
+                            }
+                        }
                     }
                 }
                 System.out.println("Общее количество строк в файле: " + lineCount);
-                System.out.println("Длина самой длинной строки: " + maxLine);
-                System.out.println("Длина самой короткой строки: " + minLine);
+                System.out.println("Доля запросов от YandexBot: " + String.format("%.3f", (double) yandexCount * 100 / lineCount) + "%");
+                System.out.println("Доля запросов от Googlebot: " + String.format("%.3f", (double) googleCount * 100 / lineCount) + "%");
             } catch (Exception e) {
                 e.printStackTrace();
             }
